@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+using Emgu.CV;
+using Emgu;
+using Emgu.CV.Structure;
+using Emgu.CV.CvEnum;
+
+
+
+namespace WindowsFormsApplication1
+{
+    public partial class Form1 : Form
+    {
+        Image<Bgr, Byte> ori;
+        Image<Gray, Byte> Gray;
+        String text;
+        
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            ori = new Image<Bgr, Byte>(openFileDialog1.FileName);
+            Gray = new Image<Gray, Byte>(ori.Size);
+            pictureBox1.Image = ori.Bitmap;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CvInvoke.cvCvtColor(ori, Gray, COLOR_CONVERSION.CV_BGR2GRAY);
+            pictureBox1.Image = Gray.Bitmap;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            CvInvoke.cvCanny(Gray, Gray, 0, 0, 3);
+            pictureBox1.Image = Gray.Bitmap;
+        }
+    }
+}
